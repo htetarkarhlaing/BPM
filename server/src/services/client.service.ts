@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { IClient } from "@/interfaces/services/client"
 
 export default class ClientSerivce {
@@ -17,7 +17,6 @@ export default class ClientSerivce {
                 return ({ data: clientList, error: null });
             })
             .catch((err) => {
-                console.log(err);
                 return ({ data: null, error: err });
             });
 	}

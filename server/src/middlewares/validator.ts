@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
+let totalRequests: number = 0;
+
 const validator = (req: Request, res: Response, next: NextFunction) => {
 	const clientApiKey = req.headers["x-api-key"];
 	if (!clientApiKey) {
@@ -12,14 +14,28 @@ const validator = (req: Request, res: Response, next: NextFunction) => {
 				select: {
 					id: true,
 					secretKey: true,
+					count: true
 				},
 			})
 			.then((serverAPIKeys) => {
-				if (
-					serverAPIKeys.filter(
-						(serverKeys) => serverKeys.secretKey === clientApiKey
-					)
-				) {
+				let currentClient = serverAPIKeys.filter(
+					(serverKeys) => serverKeys.secretKey === clientApiKey
+				)[0];
+				if (currentClient.id) {
+					if(totalRequests > 1000) {
+						clients.update({
+							where: {
+								id: currentClient.id
+							},
+							data: {
+								count: currentClient.count + totalRequests + 1
+							}
+						})
+						totalRequests = 0
+					}
+					else {
+						totalRequests += 1
+					}
 					next();
 				} else {
 					return res
