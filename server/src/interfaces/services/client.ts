@@ -6,3 +6,7 @@ export interface IClient {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+export interface IClientCreate {
+	name: string
+}
