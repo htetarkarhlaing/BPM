@@ -10,3 +10,7 @@ export interface IClient {
 export interface IClientCreate {
 	name: string
 }
+
+export interface IClientDelete {
+	id: string;
+}

@@ -2,7 +2,7 @@ import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { v4 } from "uuid"
 import { PrismaClient } from "@prisma/client";
-import { IClient, IClientCreate } from "@/interfaces/services/client"
+import { IClient, IClientCreate, IClientDelete } from "@/interfaces/services/client"
 
 export default class ClientSerivce {
     protected prisma = new PrismaClient();
@@ -36,6 +36,21 @@ export default class ClientSerivce {
             })
             .then((createdClient) => {
                 return ({ data: createdClient, error: null });
+            })
+            .catch((err) => {
+                return ({ data: null, error: err });
+            });
+    }
+
+    public async delete({ id }: IClientDelete): Promise<{ data: IClient | null; error: any }> {
+        return this.prisma.clients
+            .delete({
+                where: {
+                    id
+                }
+            })
+            .then((deletedClient) => {
+                return ({ data: deletedClient, error: null });
             })
             .catch((err) => {
                 return ({ data: null, error: err });
