@@ -48,7 +48,7 @@ Ultimately, **BPM** web platform aims to enrich people's lives by offering a com
 
 ## Tech Stack
 
-**Client:** Next.js, Redux and Mantine UI
+**Client:** Next.js, Redux and Next-JS UI ORG
 
 **Server:** Nginx, Node, Nest.js and Prisma
 
