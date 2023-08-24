@@ -1,10 +1,31 @@
 // app/page.tsx
-import {Button} from '@nextui-org/button'; 
+'use client'
+import { Button } from '@nextui-org/button';
+import { useEffect, useState } from 'react';
+import { io, Socket } from "socket.io-client"
 
 export default function Page() {
+
+  const [socket, setSocket] = useState<Socket>()
+
+  useEffect(() => {
+    const socketIo = io("ws://localhost:8000", {
+      transports: ["websocket"]
+    })
+    setSocket(socketIo)
+
+    return () => {
+      socketIo.disconnect();
+    };
+  }, [])
+
+  const send = () => {
+    socket?.emit("hello", "world")
+  }
+
   return (
     <div>
-      <Button>Click me</Button>
+      <Button onClick={send}>Click me</Button>
     </div>
   )
 }
